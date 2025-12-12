@@ -20,10 +20,11 @@
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.27.0</quarkus.platform.version>
-        <langchain4j.version>0.22.0</langchain4j.version>
+        <quarkus.platform.version>3.27.0</quarkus.platform.version> <langchain4j.version>0.22.0</langchain4j.version>
+
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.0</surefire-plugin.version>
     </properties>
@@ -38,7 +39,6 @@
                 <scope>import</scope>
             </dependency>
 
-
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j</artifactId>
@@ -48,6 +48,20 @@
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>io.smallrye</groupId> <artifactId>jandex-maven-plugin</artifactId>
+                <version>3.2.3</version> <executions>
+                <execution>
+                    <id>make-index</id>
+                    <goals>
+                        <goal>jandex</goal>
+                    </goals>
+                </execution>
+            </executions>
+            </plugin>
+        </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>

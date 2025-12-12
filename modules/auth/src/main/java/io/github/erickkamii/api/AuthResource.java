@@ -1,38 +1,47 @@
 package io.github.erickkamii.api;
 
-import io.github.erickkamii.domain.User;
-import io.github.erickkamii.dto.LoginResponse;
-import io.github.erickkamii.service.TokenService;
-import io.smallrye.jwt.build.Jwt;
+import io.github.erickkamii.dto.request.LoginRequest;
+import io.github.erickkamii.dto.request.RegisterRequest;
+import io.github.erickkamii.dto.response.LoginResponse;
+import io.github.erickkamii.dto.response.RefreshResponse;
+import io.github.erickkamii.dto.response.RegisterResponse;
+import io.github.erickkamii.service.AuthService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
-import org.jose4j.jwt.JwtClaims;
-
-import java.util.Map;
 
 @Path("/api/v1/auth")
 public class AuthResource {
 
     @Inject
-    TokenService tokenService;
+    AuthService authService;
+
+    @POST
+    @Path("/register")
+    public RestResponse<RegisterResponse> register(RegisterRequest request) {
+        var response = authService.register(request);
+        return RestResponse.ok(response);
+    }
+
+    @POST
+    @Path("/login")
+    public RestResponse<LoginResponse> login(LoginRequest request) {
+        var response = authService.login(request);
+        return RestResponse.ok(response);
+    }
 
     @POST
     @Path("/refresh")
-    public RestResponse<LoginResponse> refresh(@HeaderParam("Authorization") String refreshToken) {
-        String token = refreshToken.replace("Bearer ", "");
+    public RestResponse<RefreshResponse> refresh(@HeaderParam("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Missing or invalid Authorization header");
+        }
 
-//        JwtClaims claims = Jwt.verify(token);
-//
-//        Long uid = claims.getClaimValue("uid", Long.class);
-//        String email = claims.getSubject();
-//        var user = new User(uid, email);
-//        String newAccess = tokenService.generateAccessToken(user);
-//
-//        return Response.ok(Map.of("access_token", newAccess)).build();
-        return RestResponse.ok();
+        var token = authHeader.substring("Bearer ".length());
+        var response = authService.refresh(token);
+
+        return RestResponse.ok(response);
     }
 }
