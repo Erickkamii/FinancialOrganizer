@@ -1,4 +1,4 @@
-package io.github.erickkamii.dto;
+package io.github.erickkamii.request;
 
 public record FinancialRequest() {
 }
