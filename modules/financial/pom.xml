@@ -17,7 +17,6 @@
             <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-rest -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest</artifactId>

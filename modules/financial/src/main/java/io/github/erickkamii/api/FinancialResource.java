@@ -1,5 +1,6 @@
 package io.github.erickkamii.api;
 
+import io.github.erickkamii.domain.ParsedStatement;
 import io.github.erickkamii.request.ImportRequest;
 import io.github.erickkamii.exception.ApiException;
 import io.github.erickkamii.service.ImportService;
@@ -20,7 +21,7 @@ public class FinancialResource {
     @POST
     @Path("/import")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public RestResponse<?> receiveBankStatement(@BeanParam ImportRequest form) {
+    public RestResponse<ParsedStatement> receiveBankStatement(@BeanParam ImportRequest form) {
         if (form.file() != null) {
             return RestResponse.ok(service.importFile(form));
         } else {
