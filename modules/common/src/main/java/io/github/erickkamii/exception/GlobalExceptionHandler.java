@@ -24,19 +24,15 @@ public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
         int status = RestResponse.Status.INTERNAL_SERVER_ERROR.getStatusCode();
         String message = "Unexpected error";
 
-        if (ex instanceof ApiException apiEx) {
-            status = apiEx.getStatus();
-            message = apiEx.getMessage();
-        } else if (ex instanceof NotFoundException notFoundEx) {
-            status = notFoundEx.getStatus();
-            message = notFoundEx.getMessage();
-        } else if (ex instanceof BusinessException businessEx) {
-            status = businessEx.getStatus();
-            message = businessEx.getMessage();
-        } else if (ex instanceof DomainException domainEx) {
-            status = domainEx.getStatus();
-            message = domainEx.getMessage();
-        } else {
+        if (ex instanceof HttpMappableException httpEx) {
+            status = httpEx.getStatus();
+            message = httpEx.getMessage();
+        } else if (ex instanceof InternalError internalEx) {
+            LOG.error("Internal error occurred", ex);
+            status = Response.Status.INTERNAL_SERVER_ERROR.getStatusCode();
+            message = ex.getMessage();
+        }
+        else {
             LOG.error("Unhandled exception", ex);
         }
 
