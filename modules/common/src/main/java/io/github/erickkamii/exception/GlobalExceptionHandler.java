@@ -27,7 +27,7 @@ public class GlobalExceptionHandler implements ExceptionMapper<Throwable> {
         if (ex instanceof HttpMappableException httpEx) {
             status = httpEx.getStatus();
             message = httpEx.getMessage();
-        } else if (ex instanceof InternalError internalEx) {
+        } else if (ex instanceof InternalException internalEx) {
             LOG.error("Internal error occurred", ex);
             status = Response.Status.INTERNAL_SERVER_ERROR.getStatusCode();
             message = ex.getMessage();

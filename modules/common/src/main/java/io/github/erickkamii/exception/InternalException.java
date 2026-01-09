@@ -1,4 +1,4 @@
 package io.github.erickkamii.exception;
 
-public interface InternalError {
+public interface InternalException {
 }
